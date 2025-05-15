@@ -3,11 +3,11 @@ server:
 
 spring:
   r2dbc:
-    url: r2dbc:pool:postgres://localhost:5432/awsyandex
+    url: r2dbc:pool:postgres://postgres:5432/awsyandex
     username: postgres
     password: postgres
   flyway:
-    url: jdbc:postgresql://localhost:5432/awsyandex
+    url: jdbc:postgresql://postgres:5432/awsyandex
     locations: classpath:db/migration
     user: ${spring.r2dbc.username}
     password: ${spring.r2dbc.password}
@@ -25,8 +25,8 @@ jwt:
 
 yandex:
   cloud:
-    access-key: add
-    secret-key: add
+    access-key: add new
+    secret-key: add new
     region: ru-central1
     endpoint: https://storage.yandexcloud.net
     bucket: spring-boot-s3example

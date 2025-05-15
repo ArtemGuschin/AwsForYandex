@@ -1,8 +1,7 @@
-version: '3.8'
-
 services:
   postgres:
     image: postgres:latest
+    container_name: postgres
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -13,29 +12,32 @@ services:
       - postgres-data:/var/lib/postgresql/data
     networks:
       - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
 
   com-artem:
-    image: com-artem:latest
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: com-artem
+    depends_on:
+      postgres:
+        condition: service_healthy
     environment:
-
-      SPRING_R2DBC_URL: r2dbc:postgresql://postgres:5432/awsyandex
-      SPRING_R2DBC_USERNAME: postgres
-      SPRING_R2DBC_PASSWORD: postgres
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/awsyandex
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
-
-      # AWS настройки
-      ARTEM_AWS_ACCESS_KEY: add
-      ARTEM_AWS_SECRET_KEY: add
+      SPRING_R2DBC_URL: r2dbc:postgresql://postgres:5432/awsyandex
+      SPRING_R2DBC_USERNAME: postgres
+      SPRING_R2DBC_PASSWORD: postgres
+      ARTEM_AWS_ACCESS_KEY: add new
+      ARTEM_AWS_SECRET_KEY: add new
       ARTEM_AWS_REGION: ru-central1
     ports:
       - "8081:8081"
-    depends_on:
-      - postgres
     networks:
       - app-network
 
@@ -44,40 +46,3 @@ networks:
 
 volumes:
   postgres-data:
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
